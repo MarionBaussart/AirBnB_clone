@@ -48,7 +48,9 @@ class BaseModel:
         return: dictionary containing all keys/values of __dict__
         of the instance
         """
-        self.__class__ = BaseModel
-        self.created_at = self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
-        self.updated_at = self.updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
-        return self.__dict__
+        dictionary = self.__dict__.copy()
+        dictionary["__class__"] = self.__class__.__name__
+        dictionary["created_at"] = self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
+        dictionary["updated_at"] = self.updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
+
+        return dictionary

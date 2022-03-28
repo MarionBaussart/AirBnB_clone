@@ -12,14 +12,22 @@ class BaseModel:
     for other classes
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """ Initialize the attributes
         Args:
             self: first argument to instance methods
+            args: list of arguments - no-keyworded arguments
+            kwargs: double pointer to a dictionary: key/value
+            (keyworded arguments)
         """
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        self.created_at = self.updated_at = datetime.now()
+
+        for key, value in kwargs.items():
+            if key in ['created_at', 'updated_at']:
+                value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+            if key != '__class__':
+                setattr(self, key, value)
 
     def __str__(self):
         """
@@ -50,7 +58,7 @@ class BaseModel:
         """
         dictionary = self.__dict__.copy()
         dictionary["__class__"] = self.__class__.__name__
-        dictionary["created_at"] = self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
-        dictionary["updated_at"] = self.updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
+        dictionary["created_at"] = self.created_at.isoformat()
+        dictionary["updated_at"] = self.updated_at.isoformat()
 
         return dictionary

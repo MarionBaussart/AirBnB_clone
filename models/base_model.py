@@ -48,4 +48,6 @@ class BaseModel:
         return: dictionary containing all keys/values of __dict__
         of the instance
         """
+        self.created_at = self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
+        self.updated_at = self.updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f')
         return self.__dict__

@@ -55,5 +55,3 @@ class FileStorage:
         """
         with open(FileStorage.__file_path, mode="r") as file:
             self.__objects = json.load(file)
-
-

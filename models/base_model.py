@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
+from models import storage
 
 """
 Module containing class BaseModel
@@ -28,6 +29,8 @@ class BaseModel:
                 value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
             if key != '__class__':
                 setattr(self, key, value)
+        if not kwargs
+            storage.new()
 
     def __str__(self):
         """
@@ -47,6 +50,7 @@ class BaseModel:
         return: no return
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """

@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-import json
-
 """
 Module containing class FileStorage
 """
+import json
+import os
+
 
 class FileStorage:
     """
@@ -30,8 +31,9 @@ class FileStorage:
             self: first argument to instance methods
         returns: no return
         """
-        key = "<{}>.{}".format(obj.__class__.__name__, obj.id)
-        setattr(self, key, obj)
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+
+        self.__objects[key] = obj
 
     def save(self):
         """
@@ -40,11 +42,13 @@ class FileStorage:
             self: first argument to instance methods
         returns: JSON representation of an object (string)
         """
-        dict_json = {}
-        for key, value in self.__objects.items():
-            dict_json[key] = value.to_dict()
+        dict_obj = {}
+        dict_obj_copy = self.__objects.copy()
+        for key, value in dict_obj_copy.items():
+            dict_obj[key] = value.to_dict()
+
         with open(self.__file_path, mode="w") as file:
-            json.dump(dict_json, file)
+            json.dump(dict_obj, file)
 
     def reload(self):
         """
@@ -53,5 +57,6 @@ class FileStorage:
             self: first argument to instance methods
         returns: an object (Python data structure) represented by a JSON string
         """
-        with open(FileStorage.__file_path, mode="r") as file:
-            self.__objects = json.load(file)
+        if os.path.isfile(self.__file_path):
+            with open(self.__file_path, mode="r") as file:
+                self.__objects = json.load(file)

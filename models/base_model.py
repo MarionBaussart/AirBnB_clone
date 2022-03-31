@@ -7,6 +7,7 @@ from models import storage
 Module containing class BaseModel
 """
 
+
 class BaseModel:
     """
     Class BaseModel: defines all common attributes/methods
@@ -29,8 +30,8 @@ class BaseModel:
                 value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
             if key != '__class__':
                 setattr(self, key, value)
-        if not kwargs
-            storage.new()
+        if not kwargs:
+            storage.new(self)
 
     def __str__(self):
         """
